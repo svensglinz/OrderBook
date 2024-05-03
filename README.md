@@ -81,3 +81,27 @@ matcher.deleteOrder(orderReplicate);
 ```
 
 ## Performance statistics 
+### Order Insertion 
+
+Inserting N Buy and N Sell limit orders with random volumes / prices whereby volumes are between [0, 1000) and 
+prices are between [0, max_depth_per_side) for bids and [max_depth_per_side, 2*max_depth_per_side) for the ask side to ensure 
+that all orders are added to the book without any executions 
+
+![](plot1.png)
+Order insertion generally takes longer the more different prices exist in the system. 
+This is because the original insertion of a price takes O(logN) as the prices is added to a binary tree. Once a price has been inserted, 
+additional trades can be added to the price by retreiving the price instance from a hashtable.
+
+As more orders are inserted, the original insertion of the price level of the tree becomes negligible and all orders take around 100 - 200 Nanoseconds to be inserted
+
+### Executing orders
+After the orders were inserted as described above, the same amount of buy and sell orders were created with random volums between [0, 1000) but this time with 
+prices between [0, 2*max_depth_per_side) such that order crossings are allowed. 
+
+![](plot2.png)
+Thus, some orders will be executed while others will be added to the existing order book. 
+Under this scenario, order insertion / execution time is virtually independent of the size of the book and hovers around 200 nanoseconds per order
+
+### Inserting and Executing orders
+
+
