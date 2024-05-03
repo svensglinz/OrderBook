@@ -102,6 +102,7 @@ prices between [0, 2*max_depth_per_side) such that order crossings are allowed.
 Thus, some orders will be executed while others will be added to the existing order book. 
 Under this scenario, order insertion / execution time is virtually independent of the size of the book and hovers around 200 nanoseconds per order
 
+![](plot3.png)
 ### Inserting and Executing orders
 
 ## Possible Improvements 
