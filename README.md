@@ -92,7 +92,7 @@ Order insertion generally takes longer the more different prices exist in the sy
 This is because the original insertion of a price takes O(logN) as the prices is added to a binary tree. Once a price has been inserted, 
 additional trades can be added to the price by retreiving the price instance from a hashtable.
 
-As more orders are inserted, the original insertion of the price level of the tree becomes negligible and all orders take around 100 - 200 Nanoseconds to be inserted
+As more orders are inserted, the original insertion of the price level of the tree becomes negligible and the time of an order insertion is < 200 Nanoseconds
 
 ### Executing orders
 After the orders were inserted as described above, the same amount of buy and sell orders were created with random volums between [0, 1000) but this time with 
@@ -103,7 +103,6 @@ Thus, some orders will be executed while others will be added to the existing or
 Under this scenario, order insertion / execution time is virtually independent of the size of the book and hovers around 200 nanoseconds per order
 
 ### Inserting and Executing orders
-
 
 ## Possible Improvements 
 - If the structure of the orderbook is known better, the binary trees could be replaced with arrays where each address represents one price level which could increase performance as orders with similar 
