@@ -28,14 +28,14 @@ The engine supports order books for multiple instruments and allows for the foll
 <br>
 To guarantee constant execution time for all operations, the engine uses the following data structures: 
 
-<p align="justify">
-  - The matching engine manages a hash map which maps the name of each instrument to a specifc order book instance
-- each order book manages two red black binary tree (one for bids, one for asks) which store ticks (price levels) in ascending order.
-To quickly retreive a price level that has already been inserted into the tree in O(1), the orderbook also manages a hashtable that matches each price level to a node in the tree.
-This allows to access each element in the tree in O(1) once inserted.
-Further, the custom implementation of the RB-Tree stores references to the minimum and maximum tick values which allows for retreival of the best bid / ask in O(1)
-- Each tick stores orders in a doubly linked list which allows to insert, delete and remove elements in O(1)
-</p>
+<ul>
+<li>The matching engine manages a hash map which maps the name of each instrument to a specifc order book instance</li>
+<li>each order book manages two red black binary tree (one for bids, one for asks) which store ticks (price levels) in ascending order.</li>
+<li>To quickly retreive a price level that has already been inserted into the tree in O(1), the orderbook also manages a hashtable that matches each price level to a node in the tree.
+This allows to access each element in the tree in O(1) once inserted.</li>
+<li>the custom implementation of the RB-Tree stores references to the minimum and maximum tick values which allows for retreival of the best bid / ask in O(1)</li>
+<li>Each tick stores orders in a doubly linked list which allows to insert, delete and remove elements in O(1)</li>
+</ul>
 
 ## Setup
 First, create an instance of MatchingEngine and TradeLogger. 
