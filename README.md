@@ -35,7 +35,6 @@ To quickly retreive a price level that has already been inserted into the tree i
 This allows to access each element in the tree in O(1) once inserted.
 Further, the custom implementation of the RB-Tree stores references to the minimum and maximum tick values which allows for retreival of the best bid / ask in O(1)
 - Each tick stores orders in a doubly linked list which allows to insert, delete and remove elements in O(1)
-- To also be able to delete orders based on their orderID in O(1), each tick also administers a hash table which maps each orderID to a specific node/Order in the queue
 </p>
 
 ## Setup
@@ -62,22 +61,23 @@ matcher.add(o2);
 ```
 
 ## modify trades 
-To modify a trade, pass an instance of the original trade as well as an instance of the modified trade to the matching engine. 
-You can either supply the instance of the original order passed to the engine or in case this is not available anymore, you can create 
-a new instance with the same parameters as the original order. The original order will then be retrieved from the matching book through the orderID
+To modify a trade, pass an instance of the original trade as well as a new instance with the modified parameters (but same OrderID, Direction, Instrument)
+Currently, a modification is equal to deleting the original trade and inserting a new trade, which means that the place in the queue of the original trade 
+will be lost and the modified trade will be added to the end of the queue
 ```java
+Order originalOrder = new LimitOrder("Amazon", 1, 100, 100, OrderType. SELL, true);
+matcher.addOrder(originalOrder);
+
+// increase quantity
+Order modifiedOrder = new LimitOrder("Amazon", 1, 200, 100, OrderType. SELL, true); 
+matcher.modifyOrder(originalOrder, modifiedOrder);
 ```
 
 ## delete trades 
 ```java
-Order orderOriginal = new LimitOrder("Amazon", 1, 100, 100, OrderType. SELL, true);
-matcher.addOrder(orderOriginal);
-
- // original order instance may not be available anymore --> create a new 
-Order orderReplicate = new LimitOrder("Amazon", 1, 100, 100, OrderType. SELL, true); 
-
-// this deletes the original order inside the book matcher. deleteOrder(replicate) 
-matcher.deleteOrder(orderReplicate);
+Order order = new LimitOrder("Amazon", 1, 100, 100, OrderType. SELL, true);
+matcher.addOrder(order);
+matcher.deleteOrder(order);
 ```
 
 ## Performance statistics 
@@ -113,5 +113,3 @@ prices are more likely to be cached together.
 inserted into the binary tree again. If more about the book structure is known, automatic deletion of prices with no more volume could be avoided or deferred. 
 
 - Logging the trades currently slows down the system by a lot. By using a non-blocking queue and a different thread to write data, this bottleneck could be removed
-- removing the hashtable in the Tick class that associates each trade ID with an Order which allows to modify and cancel orders by using a new instance of Order with the same parameters. This would be unnecessary
-- if the user were restricted to using only the original instance of the order to delete it or make modifications to it
