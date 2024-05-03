@@ -95,9 +95,16 @@ additional trades can be added to the price by retreiving the price instance fro
 
 ### Inserting & Executing orders
 
+Inserting orders where prices are allowed to cross such that execution takes place increases average execution time per order but yields more balanced 
+execution time between different maximum book depth configurations
+
 ![](plot1_timing.png)
-Thus, some orders will be executed while others will be added to the existing order book. 
-Under this scenario, order insertion / execution time is virtually independent of the size of the book and hovers around 200 nanoseconds per order
+
+The engine is currently configured such that any price will be removed from the book once it has no more trades attached. If more information about the orderbook is known 
+(eg. the prices are very likely to fluctuate within a certain range), all prices can be instantiated beforehand, such that all operations on the orderbook will be 
+executed in O(1) as no more prices need to be added to the binary tree. 
+
+As expected, this yields virtually equal execution time across all diffferent price depth configurations. 
 
 ![](plot3_timing.png)
 
