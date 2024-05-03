@@ -105,3 +105,12 @@ Under this scenario, order insertion / execution time is virtually independent o
 ### Inserting and Executing orders
 
 
+## Possible Improvements 
+- If the structure of the orderbook is known better, the binary trees could be replaced with arrays where each address represents one price level which could increase performance as orders with similar 
+prices are more likely to be cached together. 
+
+- Currently, if a there is no more volume at a specific price in the book, that price is deleted from the tree, which increases execution time if a new trade is entered at the same price, as the price has to be
+inserted into the binary tree again. If more about the book structure is known, automatic deletion of prices with no more volume could be avoided or deferred. 
+
+- Logging the trades currently slows down the system by a lot. By using a non-blocking queue and a different thread to write data, this bottleneck could be removed
+
