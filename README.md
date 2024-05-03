@@ -113,4 +113,5 @@ prices are more likely to be cached together.
 inserted into the binary tree again. If more about the book structure is known, automatic deletion of prices with no more volume could be avoided or deferred. 
 
 - Logging the trades currently slows down the system by a lot. By using a non-blocking queue and a different thread to write data, this bottleneck could be removed
-
+- removing the hashtable in the Tick class that associates each trade ID with an Order which allows to modify and cancel orders by using a new instance of Order with the same parameters. This would be unnecessary
+- if the user were restricted to using only the original instance of the order to delete it or make modifications to it
